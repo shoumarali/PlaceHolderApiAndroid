@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-kapt")
-//    id("com.google.dagger.hilt.android")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -70,7 +70,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //kapt
-    kapt(libs.artifactId)
+
 
     // navigation compose
     implementation(libs.androidx.navigation.compose)

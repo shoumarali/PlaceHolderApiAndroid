@@ -1,4 +1,4 @@
-package com.alishoumar.placeholder.domain
+package com.alishoumar.placeholder.domain.util
 
 
 sealed class RequestState<out T> {
