@@ -8,5 +8,5 @@ interface CommentApi {
     @GET("comments")
     suspend fun getCommentsByPost(
         @Query("postId") postId : Int
-    ):CommentDataDto
+    ):List<CommentDataDto>
 }

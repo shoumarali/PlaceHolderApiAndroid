@@ -8,5 +8,5 @@ interface AlbumApi {
     @GET("albums")
     suspend fun getAlbumByUser(
         @Query("userId") userId:Int
-    ):AlbumDataDto
+    ):List<AlbumDataDto>
 }

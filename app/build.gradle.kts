@@ -78,6 +78,7 @@ dependencies {
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.gson)
+    implementation(libs.converter.gson)
 
     //splash api
     implementation(libs.androidx.core.splashscreen)
@@ -85,6 +86,7 @@ dependencies {
     //dagger hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 //
 kapt {

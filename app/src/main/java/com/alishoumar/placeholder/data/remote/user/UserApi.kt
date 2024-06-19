@@ -10,7 +10,7 @@ interface UserApi {
     suspend fun getAllUsers():List<UserDataDTO>
 
     @GET("users")
-    suspend fun getSpecificUer(
+    suspend fun getSpecificUser(
         @Query("id") userId:Int
-    ): UserDataDTO
+    ): List<UserDataDTO>
 }

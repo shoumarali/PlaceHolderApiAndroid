@@ -5,18 +5,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alishoumar.placeholder.domain.models.user.User
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun UserScreen(modifier: Modifier = Modifier) {
+fun UserScreen(
+    modifier: Modifier = Modifier,
+    users: List<User>?,
+    navigateToSearchScreen:() -> Unit,
+    onUserClick:(Int?) -> Unit
+               ) {
     Scaffold (
         topBar = {
-                 UserTopBar {
-
-                 }
+                 UserTopBar(navigateToSearchScreen =  navigateToSearchScreen)
         },
-        content = {
+        content = { paddingValues ->
 
+            UsersContent(users = users,
+                paddingValues= paddingValues,
+                onUserClick = onUserClick)
         }
     )
 }
@@ -25,5 +32,7 @@ fun UserScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun viewUserScreen() {
-    UserScreen()
+//    UserScreen(){
+//
+//    }
 }

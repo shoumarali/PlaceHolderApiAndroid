@@ -8,5 +8,5 @@ interface PhotoApi {
     @GET("photos")
     suspend fun getPhotosByAlbum(
         @Query("albumId") albumId:Int
-    ):PhotoDataDto
+    ):List<PhotoDataDto>
 }

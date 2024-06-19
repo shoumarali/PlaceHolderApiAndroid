@@ -4,6 +4,6 @@ import com.alishoumar.placeholder.domain.models.user.User
 
 
 data class UserState (
-    val users: List<User>,
-    val isLoading:Boolean
+    val users: List<User>? = null,
+    val isLoading:Boolean = false
 )
