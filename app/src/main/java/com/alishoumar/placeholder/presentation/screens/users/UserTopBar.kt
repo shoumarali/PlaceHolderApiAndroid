@@ -15,6 +15,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -25,17 +29,33 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserTopBar(modifier: Modifier = Modifier,
-               navigateToSearchScreen:() -> Unit
+               userByName:String,
+               onUserByNameChange:(String) -> Unit
 ) {
+    var showSearch by remember {
+        mutableStateOf(false)
+    }
+
     TopAppBar(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.surface)
                 ,
         title ={
-           Text(text = "Users" , color = MaterialTheme.colorScheme.onSurface)
+            if(showSearch) {
+                TextField(
+                    value = userByName,
+                    onValueChange = {onUserByNameChange(it)},
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text("Search...") }
+                )
+            }else {
+                Text(text = "Users", color = MaterialTheme.colorScheme.onSurface)
+            }
         },
         actions = {
-            IconButton(onClick = navigateToSearchScreen) {
+            IconButton(onClick =  {
+                showSearch = !showSearch
+            }) {
                 Icon(
 
                     imageVector = Icons.Default.Search,
@@ -48,10 +68,10 @@ fun UserTopBar(modifier: Modifier = Modifier,
 }
 
 
-@Preview
-@Composable
-private fun PreviewTopAppBar() {
-    UserTopBar(){
-
-    }
-}
+//@Preview
+//@Composable
+//private fun PreviewTopAppBar() {
+//    UserTopBar(){
+//
+//    }
+//}

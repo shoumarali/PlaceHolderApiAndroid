@@ -46,7 +46,6 @@ class UserInfoViewModel @Inject constructor(
                 }){
                     is RequestState.Success ->{
                         userInfoState = userInfoState.copy(
-                            isLoading = false,
                              selectedUserInfo = result.data
                         )
                     }

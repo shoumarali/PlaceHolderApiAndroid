@@ -13,4 +13,9 @@ interface UserApi {
     suspend fun getSpecificUser(
         @Query("id") userId:Int
     ): List<UserDataDTO>
+
+    @GET("users")
+    suspend fun getUserByName(
+        @Query("name") userId:String
+    ): List<UserDataDTO>
 }

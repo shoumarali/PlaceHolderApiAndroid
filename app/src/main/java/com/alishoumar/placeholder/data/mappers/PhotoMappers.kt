@@ -7,6 +7,6 @@ import com.alishoumar.placeholder.domain.models.photo.Photo
 fun List<PhotoDataDto>.toPhotoData():List<Photo>{
     return this.map {
         photo ->
-        Photo(url = photo.url)
+        Photo(url = photo.url , id =photo.id)
     }
 }

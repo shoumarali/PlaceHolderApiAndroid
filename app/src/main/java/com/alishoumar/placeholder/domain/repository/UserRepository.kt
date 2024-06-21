@@ -6,7 +6,10 @@ import com.alishoumar.placeholder.domain.util.RequestState
 
 interface UserRepository {
 
-    suspend fun getUsers():RequestState<List<User>>
+    suspend fun getUsers():List<User>
 
     suspend fun getSpecificUser(userId:Int):RequestState<UserInfo>
+
+    suspend fun getUsersByName(name:String):RequestState<List<User>>
+
 }

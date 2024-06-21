@@ -32,4 +32,14 @@ class UserRepositoryImpl @Inject constructor(
             RequestState.Error(Exception(e))
         }
     }
+
+    override suspend fun getUsersByName(name: String): RequestState<List<User>> {
+        return try {
+            RequestState.Success(
+                data = userApi.getUserByName(name).toUserData()
+            )
+        }catch (e :Exception){
+            RequestState.Error(Exception(e))
+        }
+    }
 }

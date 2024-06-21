@@ -13,7 +13,7 @@ class PhotoRepositoryImpl @Inject constructor(
 
     override suspend fun getPhotosByAlbumId(albumId: Int): RequestState<List<Photo>> {
         return try {
-            RequestState.Success(
+            RequestState.Success<List<Photo>>(
                 data = photoApi.getPhotosByAlbum(albumId).toPhotoData()
             )
         }catch (e: Exception){

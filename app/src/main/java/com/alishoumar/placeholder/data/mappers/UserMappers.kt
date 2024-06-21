@@ -28,3 +28,4 @@ fun List<UserDataDTO>.toUserInfo():UserInfo{
         phone = user.phone
     )
 }
+
