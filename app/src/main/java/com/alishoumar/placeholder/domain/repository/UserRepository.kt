@@ -8,8 +8,8 @@ interface UserRepository {
 
     suspend fun getUsers():List<User>
 
-    suspend fun getSpecificUser(userId:Int):RequestState<UserInfo>
+    suspend fun getSpecificUser(userId:Int):UserInfo
 
-    suspend fun getUsersByName(name:String):RequestState<List<User>>
+    suspend fun getUsersByName(name:String):List<User>
 
 }

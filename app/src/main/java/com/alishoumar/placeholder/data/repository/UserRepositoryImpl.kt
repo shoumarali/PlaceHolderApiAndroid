@@ -13,33 +13,15 @@ class UserRepositoryImpl @Inject constructor(
     private val userApi: UserApi,
 ):UserRepository {
 
-    override suspend fun getUsers(): RequestState<List<User>> {
-        return try {
-            RequestState.Success(
-                data = userApi.getAllUsers().toUserData()
-            )
-        }catch (e :Exception){
-            RequestState.Error(Exception(e))
-        }
+    override suspend fun getUsers(): List<User> {
+        return userApi.getAllUsers().toUserData()
     }
 
-    override suspend fun getSpecificUser(userId: Int): RequestState<UserInfo> {
-        return try {
-            RequestState.Success(
-                data = userApi.getSpecificUser(userId = userId).toUserInfo()
-            )
-        } catch (e : Exception){
-            RequestState.Error(Exception(e))
-        }
+    override suspend fun getSpecificUser(userId: Int): UserInfo {
+        return  userApi.getSpecificUser(userId = userId).toUserInfo()
     }
 
-    override suspend fun getUsersByName(name: String): RequestState<List<User>> {
-        return try {
-            RequestState.Success(
-                data = userApi.getUserByName(name).toUserData()
-            )
-        }catch (e :Exception){
-            RequestState.Error(Exception(e))
-        }
+    override suspend fun getUsersByName(name: String): List<User> {
+        return userApi.getUserByName(name).toUserData()
     }
 }

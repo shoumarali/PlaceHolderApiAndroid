@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alishoumar.placeholder.domain.repository.PhotoRepository
+import com.alishoumar.placeholder.domain.useCases.photo.GetPhotoUseCase
 import com.alishoumar.placeholder.domain.util.RequestState
 import com.alishoumar.placeholder.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoViewModel @Inject constructor(
-    private val photoRepository: PhotoRepository,
+    private val getPhotoUseCase: GetPhotoUseCase,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel(){
 
@@ -28,7 +29,6 @@ class PhotoViewModel @Inject constructor(
 
     init {
         getAlbumId()
-        Log.d("tag", ": ${uiState.albumId}")
     }
 
     private fun getAlbumId(){
@@ -39,23 +39,14 @@ class PhotoViewModel @Inject constructor(
     }
 
     fun loadPhotos(){
-        viewModelScope.launch {
-            photoState = photoState.copy(
-                loading = true
-            )
-            withContext(Dispatchers.IO){
-                when(val result =
-                    uiState.albumId?.let { photoRepository.getPhotosByAlbumId(it.toInt()) }){
-
-                    is RequestState.Success ->{
-                        photoState = photoState.copy(
-                            photoList = result.data
-                        )
-                    }
-                    else -> {
-                        photoState = photoState.copy(
-                            error = result.toString()
-                        )
+        viewModelScope.launch(Dispatchers.IO) {
+            uiState.albumId?.let {
+                albumId ->
+                getPhotoUseCase(albumId.toInt()).collect{
+                    photoState = when(it){
+                        is RequestState.Success -> photoState.copy(photoList = it.data)
+                        is RequestState.Loading -> photoState.copy(loading = true)
+                        is RequestState.Error -> photoState.copy(error = "Something went wrong")
                     }
                 }
             }

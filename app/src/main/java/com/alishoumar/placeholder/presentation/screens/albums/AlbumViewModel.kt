@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alishoumar.placeholder.domain.repository.AlbumRepository
+import com.alishoumar.placeholder.domain.useCases.album.GetAlbumUseCase
 import com.alishoumar.placeholder.domain.util.RequestState
 import com.alishoumar.placeholder.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlbumViewModel @Inject constructor(
-    private val albumsRepo:AlbumRepository,
+    private val getAlbumUseCase: GetAlbumUseCase,
     private val savedStateHandle: SavedStateHandle
 ):ViewModel() {
 
@@ -38,28 +39,22 @@ class AlbumViewModel @Inject constructor(
     }
 
     fun loadAlbums(){
-     viewModelScope.launch {
-         albumsState = albumsState.copy(
-             loading = true
-         )
-         withContext(Dispatchers.IO){
-             when(val result = uiState
-                 .userId?.let { albumsRepo.getAlbumsByUserId(it.toInt()) }){
-                 is RequestState.Success -> {
-                     albumsState  = albumsState.copy(
-                         albums = result.data
-                     )
-                 }
-                 else -> {
-                     albumsState = albumsState.copy(
-                         error= result.toString()
-                     )
+     viewModelScope.launch(Dispatchers.IO) {
+         uiState.userId?.let {userId ->
+             getAlbumUseCase(userId.toInt()).collect{
+                 albumsState = when(it){
+                     is RequestState.Success -> {
+                         Log.d("tag", "loadAlbums: ${it.data}")
+                          albumsState.copy(albums = it.data)
+                     }
+                     is RequestState.Loading -> albumsState.copy(loading = true)
+                     is RequestState.Error -> albumsState.copy(error = "Something went wrong")
                  }
              }
          }
      }
-
     }
+
 
 }
 

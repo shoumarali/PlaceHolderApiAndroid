@@ -5,5 +5,5 @@ import com.alishoumar.placeholder.domain.util.RequestState
 
 interface PostRepository {
 
-    suspend fun getPosts(userId:Int):RequestState<List<Post>>
+    suspend fun getPosts(userId:Int):List<Post>
 }

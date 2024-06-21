@@ -10,14 +10,8 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val postApi: PostApi
 ) : PostRepository {
-    override suspend fun getPosts(userId: Int): RequestState<List<Post>> {
-
-        return try {
-            RequestState.Success(data = postApi.getPostsByUser(userId).toPostData())
-        }catch (e : Exception){
-            RequestState.Error(e)
-        }
+    override suspend fun getPosts(userId: Int): List<Post> {
+        return postApi.getPostsByUser(userId).toPostData()
     }
-
 
 }

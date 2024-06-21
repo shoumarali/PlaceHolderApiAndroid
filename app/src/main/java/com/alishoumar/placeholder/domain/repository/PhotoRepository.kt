@@ -5,6 +5,6 @@ import com.alishoumar.placeholder.domain.util.RequestState
 
 interface PhotoRepository {
 
-    suspend fun getPhotosByAlbumId(albumId:Int ):RequestState<List<Photo>>
+    suspend fun getPhotosByAlbumId(albumId:Int ):List<Photo>
 
 }

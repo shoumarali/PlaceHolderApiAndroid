@@ -1,4 +1,4 @@
-package com.alishoumar.placeholder.domain.useCases
+package com.alishoumar.placeholder.domain.useCases.user
 
 import com.alishoumar.placeholder.domain.models.user.User
 import com.alishoumar.placeholder.domain.repository.UserRepository
@@ -17,7 +17,7 @@ class GetAllUsersUseCase @Inject constructor( private val userRepository: UserRe
             val result = userRepository.getUsers()
             emit(RequestState.Success(result))
         }catch (e:Exception){
-            RequestState.Error(e)
+            emit(RequestState.Error(e))
         }
 
     }

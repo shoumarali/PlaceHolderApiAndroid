@@ -5,15 +5,24 @@ import com.alishoumar.placeholder.data.remote.comment.CommentApi
 import com.alishoumar.placeholder.data.remote.photo.PhotoApi
 import com.alishoumar.placeholder.data.remote.post.PostApi
 import com.alishoumar.placeholder.data.remote.user.UserApi
+import com.alishoumar.placeholder.domain.repository.AlbumRepository
+import com.alishoumar.placeholder.domain.repository.CommentRepository
+import com.alishoumar.placeholder.domain.repository.PhotoRepository
+import com.alishoumar.placeholder.domain.repository.PostRepository
 import com.alishoumar.placeholder.domain.repository.UserRepository
-import com.alishoumar.placeholder.domain.useCases.GetAllUsersUseCase
+import com.alishoumar.placeholder.domain.useCases.album.GetAlbumUseCase
+import com.alishoumar.placeholder.domain.useCases.comments.GetAllCommentsUseCase
+import com.alishoumar.placeholder.domain.useCases.photo.GetPhotoUseCase
+import com.alishoumar.placeholder.domain.useCases.post.GetAllPostsUseCase
+import com.alishoumar.placeholder.domain.useCases.user.GetAllUsersUseCase
+import com.alishoumar.placeholder.domain.useCases.user.GetUserByNameUseCase
+import com.alishoumar.placeholder.domain.useCases.user.GetUserInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.Flow
 import javax.inject.Singleton
 
 @Module
@@ -60,9 +69,43 @@ object  AppModule{
 
     @Provides
     @Singleton
-    fun provideUserUseCase(userRepository: UserRepository):GetAllUsersUseCase{
-        return GetAllUsersUseCase(
-            userRepository
-        )
+    fun provideUserUseCase(userRepository: UserRepository): GetAllUsersUseCase {
+        return GetAllUsersUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetUserByNameUseCase(userRepository: UserRepository): GetUserByNameUseCase{
+        return GetUserByNameUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetUserInfoUseCase(userRepository: UserRepository): GetUserInfoUseCase{
+        return GetUserInfoUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesGetAllPostsUseCase(postRepository: PostRepository):GetAllPostsUseCase{
+        return GetAllPostsUseCase(postRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllCommentsUseCase(commentsRepository: CommentRepository): GetAllCommentsUseCase{
+        return GetAllCommentsUseCase(commentsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPhotoUseCase(photoRepository: PhotoRepository):GetPhotoUseCase{
+        return GetPhotoUseCase(photoRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAlbumUseCase(albumRepository: AlbumRepository):GetAlbumUseCase{
+        return GetAlbumUseCase(albumRepository)
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alishoumar.placeholder.domain.repository.CommentRepository
+import com.alishoumar.placeholder.domain.useCases.comments.GetAllCommentsUseCase
 import com.alishoumar.placeholder.domain.util.RequestState
 import com.alishoumar.placeholder.presentation.util.Constants.COMMENTS_SCREEN_ARGUMENT_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommentsViewModel @Inject constructor(
-    private val commentsRepo:CommentRepository,
+    private val getAllCommentsUseCase: GetAllCommentsUseCase,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -35,25 +36,16 @@ class CommentsViewModel @Inject constructor(
     }
 
     fun loadComments(){
-        viewModelScope.launch {
-            commentsState = commentsState.copy(
-                loading = true
-            )
-            withContext(Dispatchers.IO){
-                when(val result =
-                    uiState.postId?.let { commentsRepo.getComments(postId = it.toInt()) }){
-                    is RequestState.Success -> {
-                        commentsState = commentsState.copy(
-                            comments = result.data,
-                        )
-                    }
-                    else -> {
-                        commentsState = commentsState.copy(
-                             error = result.toString()
-                        )
-                    }
-                }
-            }
+        viewModelScope.launch (Dispatchers.IO){
+           uiState.postId?.let { postId ->
+               getAllCommentsUseCase.invoke(postId.toInt()).collect{
+                   commentsState = when(it){
+                       is RequestState.Success -> commentsState.copy(comments = it.data)
+                       is RequestState.Loading -> commentsState.copy(loading = true)
+                       is RequestState.Error -> commentsState.copy(error = "Something went wrong")
+                   }
+               }
+           }
         }
     }
 }

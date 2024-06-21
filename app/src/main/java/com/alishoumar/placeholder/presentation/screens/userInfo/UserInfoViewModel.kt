@@ -3,10 +3,13 @@ package com.alishoumar.placeholder.presentation.screens.userInfo
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alishoumar.placeholder.domain.repository.UserRepository
+import com.alishoumar.placeholder.domain.useCases.user.GetUserByNameUseCase
+import com.alishoumar.placeholder.domain.useCases.user.GetUserInfoUseCase
 import com.alishoumar.placeholder.domain.util.RequestState
 import com.alishoumar.placeholder.presentation.util.Constants.USER_INFO_SCREEN_ARGUMENT_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserInfoViewModel @Inject constructor(
-    private val repo:UserRepository,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val savedStateHandle: SavedStateHandle
 ):ViewModel() {
 
@@ -35,29 +38,15 @@ class UserInfoViewModel @Inject constructor(
     }
 
     fun loadUserInfo(){
-        viewModelScope.launch {
-            userInfoState = userInfoState.copy(
-                isLoading = true,
-            )
-            withContext(Dispatchers.IO){
-
-                when(val result = uiState.userId?.let {
-                    repo.getSpecificUser(it.toInt())
-                }){
-                    is RequestState.Success ->{
-                        userInfoState = userInfoState.copy(
-                             selectedUserInfo = result.data
-                        )
-                    }
-                    else -> {
-                        userInfoState = userInfoState.copy(
-                            isLoading = false,
-                            error = "Something went wrong"
-                        )
+        viewModelScope.launch(Dispatchers.IO) {
+            uiState.userId?.let { it ->
+                getUserInfoUseCase(it.toInt()).collect{
+                    userInfoState = when(it){
+                        is RequestState.Success -> userInfoState.copy(selectedUserInfo = it.data)
+                        is RequestState.Loading -> userInfoState.copy(isLoading = true)
+                        is RequestState.Error -> userInfoState.copy(error = "Something went wrong")
                     }
                 }
-
-
             }
         }
     }

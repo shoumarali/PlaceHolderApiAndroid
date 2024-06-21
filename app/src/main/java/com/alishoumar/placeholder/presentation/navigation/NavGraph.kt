@@ -3,6 +3,7 @@ package com.alishoumar.placeholder.presentation.navigation
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -90,7 +91,7 @@ fun NavGraphBuilder.userRoute(navigateToUserInfo:(Int?) -> Unit){
         LaunchedEffect(userByName) {
             if (userByName.length > 5) {
                 delay(500)
-                viewModel.loadUserByName(userByName)
+               viewModel.loadUserByName(userByName)
             } else {
                 viewModel.loadUsers()
             }

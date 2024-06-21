@@ -6,5 +6,5 @@ import com.alishoumar.placeholder.domain.util.RequestState
 
 interface CommentRepository {
 
-    suspend fun getComments(postId:Int):RequestState<List<Comment>>
+    suspend fun getComments(postId:Int):List<Comment>
 }
