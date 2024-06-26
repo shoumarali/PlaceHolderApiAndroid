@@ -27,7 +27,6 @@ import com.alishoumar.placeholder.presentation.screens.userInfo.UserInfoScreen
 import com.alishoumar.placeholder.presentation.screens.userInfo.UserInfoViewModel
 import com.alishoumar.placeholder.presentation.screens.users.UserScreen
 import com.alishoumar.placeholder.presentation.screens.users.UserViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.log
 
@@ -55,28 +54,13 @@ fun SetUpNavGraph(
             },
             onAlbumClick = {
                 navController.navigate(Screen.Albums.passUserIdForAlbums(it))
-            })
-        postsRoute(onBackPress = {
-            navController.popBackStack()
-        },
-            onCommentsClick = {
-                navController.navigate(Screen.Comments.passPostIdForComments( it))
-            })
-        commentsRoute(onBackPress = {
-            navController.popBackStack()
-        })
-        albumsRoute(onBackPress = {
-            navController.popBackStack()
-        },
-            onAlbumClick = {
-                navController.navigate(Screen.Photos.passAlbumIdForPhotos(it))
-            })
-        photosRoute(
-            onBackPress = {
-                navController.popBackStack()
-            }
-        )
-      
+            },
+            )
+
+//        userInfoRoute(navController)
+
+
+
     }
 }
 @SuppressLint("UnrememberedMutableState")
@@ -107,12 +91,15 @@ fun NavGraphBuilder.userRoute(navigateToUserInfo:(Int?) -> Unit){
 }
 
 fun NavGraphBuilder.userInfoRoute(
+
     onBackPress: () -> Unit,
-                                  onPostClick:(Int) -> Unit,
-                                  onAlbumClick:(Int) -> Unit){
+    onPostClick:(Int) -> Unit,
+    onAlbumClick:(Int) -> Unit
+){
     composable(route = Screen.UserInfo.route){
         val viewModel: UserInfoViewModel = hiltViewModel()
         val user = viewModel.userInfoState.selectedUserInfo
+
 
         LaunchedEffect(key1 = Unit) {
             viewModel.loadUserInfo()
@@ -122,67 +109,10 @@ fun NavGraphBuilder.userInfoRoute(
             userInfo = it1,
             onBackPress = onBackPress,
             onPostClick = onPostClick,
-            onAlbumClick = onAlbumClick
+            onAlbumClick = onAlbumClick,
         ) }
     }
 }
 
-fun NavGraphBuilder.postsRoute(onBackPress: () -> Unit, onCommentsClick: (Int) -> Unit){
-    composable(route= Screen.Posts.route){
-       val viewModel:PostsViewModel= hiltViewModel()
-        val posts = viewModel.postsState.posts
-
-       LaunchedEffect(key1 = Unit) {
-           viewModel.loadUserPosts()
-       }
-        if (posts != null) {
-            PostsScreen(posts = posts, onBackButton = onBackPress, onCommentsClick = onCommentsClick)
-        }
-    }
-}
-
-fun NavGraphBuilder.albumsRoute(onBackPress: () -> Unit,
-                                onAlbumClick: (Int) -> Unit){
-    composable(route = Screen.Albums.route){
-        val viewModel : AlbumViewModel = hiltViewModel()
-        val albums = viewModel.albumsState.albums
-        LaunchedEffect(key1 = Unit) {
-            viewModel.loadAlbums()
-        }
-        if (albums != null) {
-            AlbumsScreen(albums = albums,
-                onBackPress = onBackPress,
-                onAlbumClick = onAlbumClick)
-        }
-    }
-}
 
 
-fun NavGraphBuilder.photosRoute(onBackPress: () -> Unit){
-    composable(route = Screen.Photos.route){
-        val viewModel:PhotoViewModel = hiltViewModel()
-        val photos = viewModel.photoState.photoList
-
-        LaunchedEffect(key1 = Unit) {
-            viewModel.loadPhotos()
-        }
-
-        PhotoScreen(photoList = photos, onBackPress = onBackPress)
-    }
-}
-
-fun NavGraphBuilder.commentsRoute(onBackPress: () -> Unit){
-    composable(route = Screen.Comments.route){
-
-        val viewModel:CommentsViewModel = hiltViewModel()
-        val comments = viewModel.commentsState.comments
-
-        LaunchedEffect(key1 = Unit) {
-            viewModel.loadComments()
-        }
-
-        if (comments != null) {
-            CommentScreen(comments = comments, onBackPress = onBackPress)
-        }
-    }
-}

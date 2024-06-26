@@ -1,52 +1,101 @@
 package com.alishoumar.placeholder.presentation.screens.userInfo
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.alishoumar.placeholder.domain.models.user.UserInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserInfoTopBar (userInfo: UserInfo, onBackPress:() -> Unit){
+fun UserInfoTopBar(
+    userInfo: UserInfo,
+    onBackPress: () -> Unit,
+    onHeightCalculated: (Int) -> Unit
+) {
+    var size by remember { mutableStateOf(IntSize.Zero) }
 
-    TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = onBackPress) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back Arrow Icon"
-                )
+    Column(
+        modifier = Modifier
+            .onGloballyPositioned { coordinates ->
+                size = coordinates.size
+                onHeightCalculated(size.height)
             }
-        },
-        title = { userInfo.userName?.let { androidx.compose.material3.Text(text = it) } },
-        actions = {
-            DeleteUserAction(
-                selectedUser = userInfo.id,
-                ){
-                
+    ) {
+        TopAppBar(
+            navigationIcon = {
+                IconButton(onClick = onBackPress) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back Arrow Icon"
+                    )
+                }
+            },
+            title = { userInfo.userName?.let { Text(text = it) } },
+            actions = {
+                DeleteUserAction(
+                    selectedUser = userInfo.id,
+                ) {
+
+                }
+            }
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(vertical = 20.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    userInfo.name?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(12.dp))
+                    userInfo.email?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.size(20.dp))
+                Column {
+                    userInfo.phone?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
         }
-    )
+    }
 }
 
 @Composable
 fun DeleteUserAction(
     selectedUser: Int?,
-    onDeleteConfirmed:() -> Unit
+    onDeleteConfirmed: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var openedDialog by remember { mutableStateOf(false) }
@@ -71,13 +120,5 @@ fun DeleteUserAction(
                 }
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewUserInfoTopBar() {
-    UserInfoTopBar(userInfo = UserInfo(1,"ali","ali","fasdfa","asdfa")) {
-
     }
 }

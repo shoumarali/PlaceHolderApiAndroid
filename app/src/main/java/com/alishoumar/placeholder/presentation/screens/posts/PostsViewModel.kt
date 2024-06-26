@@ -1,5 +1,6 @@
 package com.alishoumar.placeholder.presentation.screens.posts
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class PostsViewModel @Inject constructor(
@@ -46,6 +48,7 @@ class PostsViewModel @Inject constructor(
         }
     }
 
+
 }
 
-private data class UiState( val userId:String?=null)
+private data class UiState( val userId:String?="1")

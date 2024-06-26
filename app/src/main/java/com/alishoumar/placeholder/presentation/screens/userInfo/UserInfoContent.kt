@@ -31,7 +31,7 @@ import java.nio.file.WatchEvent
 
 @Composable
 fun UserInfoContent(userInfo: UserInfo,
-                    paddingValues: PaddingValues,
+                    paddingValues: PaddingValues= PaddingValues(12.dp),
                     onPostClick:(Int) -> Unit,
                     onAlbumClick:(Int) -> Unit) {
     Column (
@@ -70,32 +70,7 @@ fun UserInfoContent(userInfo: UserInfo,
                 }
             }
         }
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(horizontal = 30.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            IconButton(onClick = { userInfo.id?.let { onPostClick(it) } }) {
-                Icon(
-                    modifier = Modifier.size(40.dp),
-                    imageVector = Icons.Default.Email,
-                    contentDescription = "Posts",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-            IconButton(onClick = { userInfo.id?.let { onAlbumClick(it) } }) {
-                Icon(
-                    modifier = Modifier.size(40.dp),
-                    imageVector = Icons.Default.Face,
-                    contentDescription = "Albums",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-        }
+
         }
 
 }

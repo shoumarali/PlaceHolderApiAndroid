@@ -13,9 +13,9 @@ fun CommentScreen(
     onBackPress:() -> Unit
 ) {
     Scaffold (
-        topBar = {
-                 CommentTopBar (onBackPress = onBackPress)
-        },
+//        topBar = {
+//                 CommentTopBar (onBackPress = onBackPress)
+//        },
         content = {
             CommentContent(comments = comments, paddingValues = it)
         }

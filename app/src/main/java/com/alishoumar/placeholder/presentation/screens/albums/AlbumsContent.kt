@@ -23,7 +23,7 @@ import com.alishoumar.placeholder.domain.models.album.Album
 
 @Composable
 fun AlbumsContent(albums:List<Album>,
-                  paddingValues: PaddingValues,
+                  paddingValues: PaddingValues= PaddingValues(12.dp),
                   onAlbumClick:(Int) -> Unit
                   ) {
     LazyColumn (

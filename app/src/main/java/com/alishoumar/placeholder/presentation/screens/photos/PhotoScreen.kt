@@ -13,9 +13,9 @@ fun PhotoScreen(
     onBackPress:() -> Unit
 ) {
     Scaffold (
-        topBar = {
-                 PhotoTopBar (onBackPress = onBackPress)
-        },
+//        topBar = {
+//                 PhotoTopBar (onBackPress = onBackPress)
+//        },
         content = {
             PhotoContent(photoList = photoList, it)
         }

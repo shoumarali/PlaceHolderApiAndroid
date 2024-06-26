@@ -13,9 +13,9 @@ fun AlbumsScreen(
     onBackPress:() -> Unit
 ) {
     Scaffold (
-        topBar = {
-            AlbumsTopBar (onBackPress = onBackPress)
-        },
+//        topBar = {
+//            AlbumsTopBar (onBackPress = onBackPress)
+//        },
         content = {
             AlbumsContent(albums = albums, paddingValues = it, onAlbumClick = onAlbumClick)
         }

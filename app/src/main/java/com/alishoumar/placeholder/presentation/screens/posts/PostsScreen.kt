@@ -9,11 +9,11 @@ import com.alishoumar.placeholder.domain.models.post.Post
 @Composable
 fun PostsScreen(posts:List<Post>, onBackButton:() -> Unit, onCommentsClick:(Int) -> Unit) {
     Scaffold (
-        topBar = {
-                 PostTopBar(postTitle = "Posts",onBackButton)
-        },
+//        topBar = {
+//                 PostTopBar(postTitle = "Posts",onBackButton)
+//        },
         content = {
-            PostsContent(posts = posts, paddingValues = it, onCommentsClick = onCommentsClick)
+                PostsContent(posts = posts, paddingValues = it, onCommentsClick = onCommentsClick)
         }
     )
 }
